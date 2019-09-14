@@ -1,0 +1,58 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.*;
+
+public class salesFoceXmlToCsvFileGenerator {
+
+    public static void main(String[] args) {
+
+
+        try {
+
+            File file = new File("D:/XmlProcessing/src/main/resources/input/OCMED.xml");
+            BufferedWriter writerdata = new BufferedWriter(new FileWriter("D:/XmlProcessing/src/main/resources/output/xml_to_csv.csv", true));
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+            Document doc = dBuilder.parse(file);
+            NodeList complexType = doc.getElementsByTagName("complexType");
+            NodeList elementType = doc.getElementsByTagName("element");
+            writerdata.write("TableName" + ",");
+            writerdata.write("ColumnName");
+            writerdata.newLine();
+            for (int i = 0; i < complexType.getLength(); i++) {
+
+                Node node1 = complexType.item(i);
+                if (node1.getNodeType() == Node.ELEMENT_NODE) {
+                    Element p = (Element) node1;
+                    String TableName = p.getAttribute("name");
+
+                    System.out.println("<--------------------- Processing Table Name ------------->" + TableName);
+                    NodeList child = p.getElementsByTagName("element");
+
+                    for (int j = 0; j < child.getLength(); j++) {
+                        Node nodeelement = child.item(j);
+                        if (nodeelement.getNodeType() == Node.ELEMENT_NODE) {
+                            Element e = (Element) nodeelement;
+                            if (e.getTagName().equalsIgnoreCase("element")) {
+                                String columnNameEle = e.getAttribute("name");
+                                if (TableName.equals("") || columnNameEle.equals("")) {
+                                    writerdata.write("");
+                                } else {
+                                    writerdata.write(TableName + "," + columnNameEle);
+                                    writerdata.newLine();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            writerdata.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
