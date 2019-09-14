@@ -13,8 +13,8 @@ public class salesFoceXmlToCsvFileGenerator {
 
         try {
 
-            File file = new File("D:/XmlProcessing/src/main/resources/input/OCMED.xml");
-            BufferedWriter writerdata = new BufferedWriter(new FileWriter("D:/XmlProcessing/src/main/resources/output/xml_to_csv.csv", true));
+            File file = new File("D:/XmlProcessing/src/main/resources/input/OCMED.xml");  // input file path
+            BufferedWriter writerdata = new BufferedWriter(new FileWriter("D:/XmlProcessing/src/main/resources/output/xml_to_csv.csv", true));  // output file path
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
             Document doc = dBuilder.parse(file);
